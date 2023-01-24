@@ -51,6 +51,9 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 flutter:
+  # 이미지를 사용하기 위해서는 현재 파일에서 사용 등록을 해줘야 함, 'assets/' 하위의 모든 파일을 사용하겠다는 뜻 
+  assets:
+    - assets/
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
