@@ -11,8 +11,27 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // MaterialApp은 플러터에서 기본 제공하는 디자인 템플릿임
     return MaterialApp(
-      home: Center(child: SizedBox(width: 270, child: Image.asset('1.png')))
+      // 레이아웃을 상중하로 나누어주는 Scafford 위젯
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('앱임')),
+        body: Text('안녕 ㅋ'),
+        bottomNavigationBar: BottomAppBar(
+          child: SizedBox(
+            height: 60,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Icon(Icons.phone),
+                Icon(Icons.message),
+                Icon(Icons.contact_page),
+              ],
+            ),
+          )
+        ),
+      ),
     );
   }
 }
