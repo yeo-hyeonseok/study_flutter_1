@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -17,45 +16,34 @@ class MyApp extends StatelessWidget {
       // 레이아웃을 상중하로 나누어주는 Scafford 위젯
       home: Scaffold(
         appBar: AppBar(
-          title: Text('앱임')),
+          leading: Icon(Icons.view_list),
+          actions: [Icon(Icons.ac_unit), Icon(Icons.access_alarm), Icon(Icons.admin_panel_settings)],
+          title: Text('앱임', style: TextStyle(
+            fontWeight: FontWeight.w500, letterSpacing: 5
+          ),),
+        ),
         body: SizedBox(
           width: double.infinity,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Container(
-                width: 100, height: 100, color: Colors.orange, margin: EdgeInsets.all(20), padding: EdgeInsets.all(20),
-                child: Text('박스 1'),
-              ),
-              Container(
-                width: 120, height: 120, color: Colors.orange, margin: EdgeInsets.fromLTRB(20, 20, 20, 20), padding: EdgeInsets.fromLTRB(10, 15, 10, 15),
-                child: Text('박스 2'),
-              ),
-              Container(
-                width: 140, height: 140, margin: EdgeInsets.all(20), padding: EdgeInsets.all(5),
-                child: Text('기타 자잘한 스타일 설정은 decoration에다가'),
-                decoration: BoxDecoration(
+              Text('안녕하세요?',
+                style: TextStyle(
                   color: Colors.orange,
-                  border: Border.all(color: Colors.indigo, width: 10),
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      spreadRadius: 5,
-                      blurRadius: 7,
-                      offset: Offset(0, 3), // changes position of shadow
-                    ),
-                  ],
+                  fontSize: 20,
                 ),
               ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Text("Align 위젯으로도 정렬할 수 있음"),
-              )
+              Icon(Icons.star, color: Colors.yellow, size: 40,),
+              ElevatedButton(
+                onPressed: (){},
+                child: Text('입력'), 
+                style: ButtonStyle(
+                ),
+              ),
+              IconButton(onPressed: (){}, icon: Icon(Icons.star))
             ],
           ),
-        ),
-
+        )
       ),
     );
   }
