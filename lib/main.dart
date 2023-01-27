@@ -15,36 +15,69 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       // 레이아웃을 상중하로 나누어주는 Scafford 위젯
       home: Scaffold(
-        appBar: AppBar(
-          leading: Icon(Icons.view_list),
-          actions: [Icon(Icons.ac_unit), Icon(Icons.access_alarm), Icon(Icons.admin_panel_settings)],
-          title: Text('앱임', style: TextStyle(
-            fontWeight: FontWeight.w500, letterSpacing: 5
-          ),),
-        ),
-        body: SizedBox(
-          width: double.infinity,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Text('안녕하세요?',
-                style: TextStyle(
-                  color: Colors.orange,
-                  fontSize: 20,
-                ),
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(60),
+          child: AppBar(
+            leadingWidth: 160,
+
+            leading: Theme(
+              data: ThemeData(
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
               ),
-              Icon(Icons.star, color: Colors.yellow, size: 40,),
-              ElevatedButton(
-                onPressed: (){},
-                child: Text('입력'), 
-                style: ButtonStyle(
-                ),
+              child: TextButton(
+                  child:Container(
+                    margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                    height: double.infinity,
+                    child: Row(
+                        children: [
+                          Text('금호동3가', style:TextStyle(
+                              color: Colors.black,
+                              fontSize: 22, fontWeight: FontWeight.bold
+                          ),),
+                          Icon(Icons.keyboard_arrow_down, size: 25, color: Colors.black),
+                        ]
+                    ),
+                  ), onPressed: (){}),
+            ),
+            actions: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                      margin: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                      child: IconButton(onPressed: (){},
+                        icon: Icon(Icons.search, color: Colors.black, size: 32,)
+                        ,)
+                  ),
+                  Container(
+                      margin: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                      child: IconButton(onPressed: (){},
+                        icon: Icon(Icons.reorder, color: Colors.black, size: 32,)
+                        ,)
+                  ),
+                  Container(
+                      margin: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                      child: IconButton(onPressed: (){},
+                        icon: Icon(Icons.notifications_none, color: Colors.black, size: 32,)
+                        ,)
+                  ),
+                ],
               ),
-              IconButton(onPressed: (){}, icon: Icon(Icons.star))
             ],
+            backgroundColor: Colors.white,
           ),
-        )
-      ),
+        ),
+        body: Column(
+          children: [
+            Container(
+              child: Row(
+
+              ),
+            )
+          ],
+        ),
+      )
     );
   }
 }
