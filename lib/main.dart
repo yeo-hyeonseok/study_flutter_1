@@ -68,80 +68,95 @@ class MyApp extends StatelessWidget {
             backgroundColor: Colors.white,
           ),
         ),
-        body: Column(
-          children: [
-            Container(
-              padding: EdgeInsets.fromLTRB(15, 20, 15, 20),
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    color: Colors.grey.shade300
-                  )
-                ),
-                color: Colors.white
-              ),
-              child: Row(
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(7.0),
-                    child: Image.asset('item.jpg',width: 140,height: 130,fit: BoxFit.fitHeight,),
-                  ),
-                  Container(
-                    margin: EdgeInsets.fromLTRB(15, 0, 0, 0),
-                    width: 310,
-                    height: 130,
-                    child: Column(
-                        children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                SizedBox(
-                                  width: 270,
-                                  child: Text('맥북 m1 에어 256GB 판매합니다. (네고 사절)',
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w600
-                                    ),),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.fromLTRB(0, 2, 0, 2),
-                                  child: Row(
-                                    children: [
-                                      Text('성동구 행당동', style: TextStyle(
-                                        color: Colors.grey.shade400,
-                                        fontWeight: FontWeight.w600,
-                                      ),),
-                                      Text(' · 끌올 10분 전', style: TextStyle(
-                                          color: Colors.grey.shade400,
-                                          fontWeight: FontWeight.w600
-                                      ),)
-                                    ],
-                                  ),
-                                ),
-                                Text('210,000원', style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18
-                                ),)
-                              ],
-                            ),
+        body: Container(
+          color: Colors.white,
+          child: Column(
+            children: [
+              Container(
+                height: 150,
+                padding: EdgeInsets.all(10),
+                child: Row(
+                  children: [
+                    Image.asset('item.jpg', width: 150,),
+                    Expanded(
+                      child: Container(
+                        color: Colors.red,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('애플 맥북 m1 에어 256기가 급처합니다. 네고 사절'),
+                            Text('금호동 행당동'),
+                            Text('155,000원'),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-                                Icon(Icons.favorite_border, color: Colors.grey,),
-                                Text('4', style: TextStyle(
-                                  fontSize: 18
-                                ),)
+                                Icon(Icons.favorite),
+                                Text('4')
                               ],
-                            ),
-                        ],
+                            )
+                          ],
+                        ),
                       ),
-                  ),
-                ],
+                    )
+                  ],
+                ),
               ),
-            )
-          ],
-        ),
+              Container(
+                height:1.0,
+                width:500.0,
+                color:Colors.grey,
+                margin: EdgeInsets.fromLTRB(0, 20, 0, 20),
+              ),
+              Container(
+                height: 100,
+                child: Row(
+                  children: [
+                    //특정 박스의 너비를 꽉 채우고 싶다면 Expanded, flex:1을 가진 flexible과 동일함
+                    Expanded(child: Container(
+                      color: Colors.red,
+                    )),
+                    Container(
+                      color: Colors.blue,
+                      width: 100,
+                    )
+                  ],
+                ),
+              ),
+              Container(
+                height:1.0,
+                width:500.0,
+                color:Colors.grey,
+                margin: EdgeInsets.fromLTRB(0, 20, 0, 20),
+              ),
+              Container(
+                height: 100,
+                child: Row(
+                  children: [
+                    // 특정 박스의 너비를 비율로 나타내고 싶다면 Flexible
+                    Flexible(
+                      flex: 3,
+                      child: Container(
+                        color: Colors.red,
+                      ),
+                    ),
+                    Flexible(
+                      flex: 6,
+                      child: Container(
+                        color: Colors.blue,
+                      ),
+                    ),
+                    Flexible(
+                      flex: 1,
+                      child: Container(
+                        color: Colors.yellow,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ]
+          ),
+        )
       )
     );
   }
