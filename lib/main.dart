@@ -15,151 +15,105 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       // 레이아웃을 상중하로 나누어주는 Scafford 위젯
       home: Scaffold(
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(60),
-          child: AppBar(
-            leadingWidth: 160,
-
-            leading: Theme(
-              data: ThemeData(
-                splashColor: Colors.transparent,
-                highlightColor: Colors.transparent,
-              ),
-              child: TextButton(
-                  child:Container(
-                    margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                    height: double.infinity,
-                    child: Row(
-                        children: [
-                          Text('금호동3가', style:TextStyle(
-                              color: Colors.black,
-                              fontSize: 22, fontWeight: FontWeight.bold
-                          ),),
-                          Icon(Icons.keyboard_arrow_down, size: 25, color: Colors.black),
-                        ]
-                    ),
-                  ), onPressed: (){}),
+        appBar: AppBar(),
+        // 스크롤바를 생성해주는 세로 정렬 박스를 만들고 싶다면 listview
+        // => 스크롤 위치 감지 기능
+        // => 메모리 절약 기능, 사용자에게 실제로 보이지 않는 ui는 메모리에서 삭제해줄 수 있음
+        body: ListView(
+          children: [
+            Profile(),
+            Profile(),
+            Profile(),
+            Container(
+              color: Colors.red,
+              height: 200,
             ),
-            actions: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                      margin: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                      child: IconButton(onPressed: (){},
-                        icon: Icon(Icons.search, color: Colors.black, size: 32,)
-                        ,)
-                  ),
-                  Container(
-                      margin: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                      child: IconButton(onPressed: (){},
-                        icon: Icon(Icons.reorder, color: Colors.black, size: 32,)
-                        ,)
-                  ),
-                  Container(
-                      margin: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                      child: IconButton(onPressed: (){},
-                        icon: Icon(Icons.notifications_none, color: Colors.black, size: 32,)
-                        ,)
-                  ),
-                ],
-              ),
-            ],
-            backgroundColor: Colors.white,
-          ),
+            Container(
+              color: Colors.orange,
+              height: 200,
+            ),
+            Container(
+              color: Colors.yellow,
+              height: 200,
+            ),
+            Container(
+              color: Colors.green,
+              height: 200,
+            ),
+            Container(
+              color: Colors.blue,
+              height: 200,
+            ),
+            Container(
+              color: Colors.indigo,
+              height: 200,
+            ),
+            Container(
+              color: Colors.purple,
+              height: 200,
+            )
+          ],
         ),
-        body: Container(
-          color: Colors.white,
-          child: Column(
-            children: [
-              Container(
-                height: 150,
-                padding: EdgeInsets.all(10),
-                child: Row(
-                  children: [
-                    Image.asset('item.jpg', width: 150,),
-                    Expanded(
-                      child: Container(
-                        color: Colors.red,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('애플 맥북 m1 에어 256기가 급처합니다. 네고 사절'),
-                            Text('금호동 행당동'),
-                            Text('155,000원'),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Icon(Icons.favorite),
-                                Text('4')
-                              ],
-                            )
-                          ],
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              Container(
-                height:1.0,
-                width:500.0,
-                color:Colors.grey,
-                margin: EdgeInsets.fromLTRB(0, 20, 0, 20),
-              ),
-              Container(
-                height: 100,
-                child: Row(
-                  children: [
-                    //특정 박스의 너비를 꽉 채우고 싶다면 Expanded, flex:1을 가진 flexible과 동일함
-                    Expanded(child: Container(
-                      color: Colors.red,
-                    )),
-                    Container(
-                      color: Colors.blue,
-                      width: 100,
-                    )
-                  ],
-                ),
-              ),
-              Container(
-                height:1.0,
-                width:500.0,
-                color:Colors.grey,
-                margin: EdgeInsets.fromLTRB(0, 20, 0, 20),
-              ),
-              Container(
-                height: 100,
-                child: Row(
-                  children: [
-                    // 특정 박스의 너비를 비율로 나타내고 싶다면 Flexible
-                    Flexible(
-                      flex: 3,
-                      child: Container(
-                        color: Colors.red,
-                      ),
-                    ),
-                    Flexible(
-                      flex: 6,
-                      child: Container(
-                        color: Colors.blue,
-                      ),
-                    ),
-                    Flexible(
-                      flex: 1,
-                      child: Container(
-                        color: Colors.yellow,
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ]
-          ),
-        )
+        bottomNavigationBar: BottomAppBar(child: MyFooter(),),
       )
     );
   }
 }
 
+// 커스텀 위젯을 사용하는 방법
+// 너무 많은 커스텀 위젯은 독이 될 수가 있다. 
+// => 상태 관리의 어려움
+// => 재사용이 많이 되는 ui들을 커스텀 위젯으로 만들자 (컴포넌트화)
+// => 하나의 페이지도 good
+class Profile extends StatelessWidget {
+  const Profile({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+      child: Row(
+        children: [
+          Container(margin: EdgeInsets.fromLTRB(0, 0, 10, 0), child: Icon(Icons.person)),
+          Text('문동은')
+        ],
+      ),
+    );
+  }
+}
+
+class MyFooter extends StatelessWidget {
+  const MyFooter({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.fromLTRB(0, 15, 0, 15),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          IconButton(onPressed: (){}, icon: Icon(Icons.phone)),
+          IconButton(onPressed: (){}, icon: Icon(Icons.message)),
+          IconButton(onPressed: (){}, icon: Icon(Icons.assignment_ind)),
+        ],
+      ),
+    );
+  }
+}
+
+
+
+// -------------------------------------------------------------------------------
+// 실은 변수나 함수로도 커스텀 위젯을 구현 가능하긴 함
+// 불변하는 ui들은 변수나 함수로 축약해도 상관 없음 ex) 로고, 상단 바 등 
+// 유동적인 데이터를 가진 ui를 변수나 함수에 저장해둘 경우에는 성능 이슈가 발생할 수 있음
+var shopItem = SizedBox(
+  child: Text('커스텀 위젯을 사용해보자 ㅋ'),
+);
+
+Widget getShopItem() {
+  return SizedBox(
+    child: Text('커스텀 위젯을 사용해보자 ㅋ'),
+  );
+}
 
