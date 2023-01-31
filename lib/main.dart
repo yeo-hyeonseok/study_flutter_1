@@ -6,10 +6,17 @@ void main() {
 }
 
 // 프로젝트의 시작은 stless
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   MyApp({Key? key}) : super(key: key);
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  // stateful 위젯에서 변수 선언하면 그것이 바로 state임
   var count = 0;
+  var names = ['문동은', '차무식', '강인구', '박연진', '오승훈', '전요환'];
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +27,10 @@ class MyApp extends StatelessWidget {
         floatingActionButton: FloatingActionButton(
           onPressed: (){
             print(count);
-            count ++;
+            // 특정 state를 변경하고 싶다면 setState 함수의 콜백함수에 관련 코드를 작성해주면 됨
+            setState(() {
+              count += 1;
+            });
           },
           child: Text('+', style: TextStyle(
             fontSize: 30
@@ -32,16 +42,34 @@ class MyApp extends StatelessWidget {
         // 스크롤바를 생성해주는 세로 정렬 박스를 만들고 싶다면 listview
         // 특정 항목을 반복해서 나타내고 싶다면 ListView.builder()
         body: ListView.builder(
-            itemCount: 100,
+            itemCount: names.length,
             itemBuilder: (context, index) => ListTile(
               leading: Icon(Icons.person),
-              title: Text('문동은 ($index)'),
+              title: Text(names[index]),
             )),
         bottomNavigationBar: BottomAppBar(child: MyFooter(),),
       )
     );
   }
 }
+
+// state를 가지고 있는 위젯을 만들고 싶다면 stful(statefulwidget)
+// state가 변경되면 해당 state를 가지고 있는 위젯이 재렌더링 됨
+// 자주 바뀌는 데이터 또는 바뀔 때마다 바로바로 보여져야 하는 데이터들은 state로 만들자
+class Counter extends StatefulWidget {
+  const Counter({Key? key}) : super(key: key);
+
+  @override
+  State<Counter> createState() => _CounterState();
+}
+
+class _CounterState extends State<Counter> {
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
+  }
+}
+
 
 // 커스텀 위젯을 사용하는 방법
 // 너무 많은 커스텀 위젯은 독이 될 수가 있다. 
@@ -87,7 +115,7 @@ class MyFooter extends StatelessWidget {
 
 
 // -------------------------------------------------------------------------------
-// 실은 변수나 함수로도 커스텀 위젯을 구현 가능하긴 함
+// 실은 변수나 함수로도 커스텀 위젯 같이 구현이 가능하긴 함
 // 불변하는 ui들은 변수나 함수로 축약해도 상관 없음 ex) 로고, 상단 바 등 
 // 유동적인 데이터를 가진 ui를 변수나 함수에 저장해둘 경우에는 성능 이슈가 발생할 수 있음
 var shopItem = SizedBox(
