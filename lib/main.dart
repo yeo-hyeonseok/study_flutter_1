@@ -17,6 +17,7 @@ class _MyAppState extends State<MyApp> {
   // stateful 위젯에서 변수 선언하면 그것이 바로 state임
   var count = 0;
   var names = ['문동은', '차무식', '강인구', '박연진', '오승훈', '전요환'];
+  var likes = [0, 0, 0, 0, 0, 0];
 
   @override
   Widget build(BuildContext context) {
@@ -44,8 +45,23 @@ class _MyAppState extends State<MyApp> {
         body: ListView.builder(
             itemCount: names.length,
             itemBuilder: (context, index) => ListTile(
-              leading: Icon(Icons.person),
+              leading: Icon(Icons.person, color: Colors.black,),
               title: Text(names[index]),
+              trailing: SizedBox(
+                width: 50,
+                child: Row(
+                  children: [
+                    Text('${likes[index]}', style: TextStyle(
+                      fontWeight: FontWeight.bold
+                    ),),
+                    IconButton(onPressed: (){
+                      setState(() {
+                        likes[index] = likes[index] + 1;
+                      });
+                    }, icon: Icon(Icons.favorite, color: Colors.red.shade600,),),
+                  ],
+                ),
+              )
             )),
         bottomNavigationBar: BottomAppBar(child: MyFooter(),),
       )
