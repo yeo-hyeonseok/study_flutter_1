@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 
 void main() {
   // 앱 구동 함수, 실제 구동할 메인페이지를 인수로 넣어주면 됨
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 // 프로젝트의 시작은 stless
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
+
+  var count = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -15,45 +17,26 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       // 레이아웃을 상중하로 나누어주는 Scafford 위젯
       home: Scaffold(
-        appBar: AppBar(),
-        // 스크롤바를 생성해주는 세로 정렬 박스를 만들고 싶다면 listview
-        // => 스크롤 위치 감지 기능
-        // => 메모리 절약 기능, 사용자에게 실제로 보이지 않는 ui는 메모리에서 삭제해줄 수 있음
-        body: ListView(
-          children: [
-            Profile(),
-            Profile(),
-            Profile(),
-            Container(
-              color: Colors.red,
-              height: 200,
-            ),
-            Container(
-              color: Colors.orange,
-              height: 200,
-            ),
-            Container(
-              color: Colors.yellow,
-              height: 200,
-            ),
-            Container(
-              color: Colors.green,
-              height: 200,
-            ),
-            Container(
-              color: Colors.blue,
-              height: 200,
-            ),
-            Container(
-              color: Colors.indigo,
-              height: 200,
-            ),
-            Container(
-              color: Colors.purple,
-              height: 200,
-            )
-          ],
+        floatingActionButton: FloatingActionButton(
+          onPressed: (){
+            print(count);
+            count ++;
+          },
+          child: Text('+', style: TextStyle(
+            fontSize: 30
+          ),),
         ),
+        appBar: AppBar(
+          title: Text('카운트: $count'),
+        ),
+        // 스크롤바를 생성해주는 세로 정렬 박스를 만들고 싶다면 listview
+        // 특정 항목을 반복해서 나타내고 싶다면 ListView.builder()
+        body: ListView.builder(
+            itemCount: 100,
+            itemBuilder: (context, index) => ListTile(
+              leading: Icon(Icons.person),
+              title: Text('문동은 ($index)'),
+            )),
         bottomNavigationBar: BottomAppBar(child: MyFooter(),),
       )
     );
@@ -71,7 +54,7 @@ class Profile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+      padding: EdgeInsets.fromLTRB(12, 10, 12, 10),
       child: Row(
         children: [
           Container(margin: EdgeInsets.fromLTRB(0, 0, 10, 0), child: Icon(Icons.person)),
