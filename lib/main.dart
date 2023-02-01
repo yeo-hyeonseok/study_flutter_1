@@ -1,8 +1,18 @@
+/*
+context가 무엇인고?
+=> 부모 위젯의 정보를 담고 있는 변수라고 보면 됨 (족보)
+=> showDialog(), Scaffold.of(), Navigator.pop(), Theme.of() 등은 context(MaterialApp) 사용을 강제하는 메서드들
+   MaterialApp 위젯 안에서 해당 메서드들을 사용하면 오류 발생함.
+   왜냐 context를 이용하는 메서드인데 MaterialApp의 부모가 존재하지 않기 때문
+*/
+
 import 'package:flutter/material.dart';
 
 void main() {
   // 앱 구동 함수, 실제 구동할 메인페이지를 인수로 넣어주면 됨
-  runApp(MyApp());
+  runApp(MaterialApp(
+      home:MyApp()
+  ));
 }
 
 // 프로젝트의 시작은 stless
@@ -15,22 +25,19 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   // stateful 위젯에서 변수 선언하면 그것이 바로 state임
-  var count = 0;
   var names = ['문동은', '차무식', '강인구', '박연진', '오승훈', '전요환'];
-  var likes = [0, 0, 0, 0, 0, 0];
 
   @override
   Widget build(BuildContext context) {
     // MaterialApp은 플러터에서 기본 제공하는 디자인 템플릿임
-    return MaterialApp(
-      // 레이아웃을 상중하로 나누어주는 Scafford 위젯
-      home: Scaffold(
+    return Scaffold(
         floatingActionButton: FloatingActionButton(
           onPressed: (){
-            print(count);
-            // 특정 state를 변경하고 싶다면 setState 함수의 콜백함수에 관련 코드를 작성해주면 됨
-            setState(() {
-              count += 1;
+            // 모달창을 만들고 싶다면 showDialog
+            // 여기서의 context는 MaterialApp에 대한 정보 가지고 있음
+            print(context.findAncestorWidgetOfExactType<MaterialApp>());
+            showDialog(context: context, builder: (context){
+              return Dialog(child: Text('모달달'),);
             });
           },
           child: Text('+', style: TextStyle(
@@ -38,7 +45,7 @@ class _MyAppState extends State<MyApp> {
           ),),
         ),
         appBar: AppBar(
-          title: Text('카운트: $count'),
+          title: Text('전화번호부'),
         ),
         // 스크롤바를 생성해주는 세로 정렬 박스를 만들고 싶다면 listview
         // 특정 항목을 반복해서 나타내고 싶다면 ListView.builder()
@@ -47,25 +54,9 @@ class _MyAppState extends State<MyApp> {
             itemBuilder: (context, index) => ListTile(
               leading: Icon(Icons.person, color: Colors.black,),
               title: Text(names[index]),
-              trailing: SizedBox(
-                width: 50,
-                child: Row(
-                  children: [
-                    Text('${likes[index]}', style: TextStyle(
-                      fontWeight: FontWeight.bold
-                    ),),
-                    IconButton(onPressed: (){
-                      setState(() {
-                        likes[index] = likes[index] + 1;
-                      });
-                    }, icon: Icon(Icons.favorite, color: Colors.red.shade600,),),
-                  ],
-                ),
-              )
             )),
         bottomNavigationBar: BottomAppBar(child: MyFooter(),),
-      )
-    );
+      );
   }
 }
 
