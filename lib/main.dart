@@ -35,9 +35,8 @@ class _MyAppState extends State<MyApp> {
           onPressed: (){
             // 모달창을 만들고 싶다면 showDialog
             // 여기서의 context는 MaterialApp에 대한 정보 가지고 있음
-            print(context.findAncestorWidgetOfExactType<MaterialApp>());
             showDialog(context: context, builder: (context){
-              return Dialog(child: Text('모달달'),);
+              return MyDialog();
             });
           },
           child: Text('+', style: TextStyle(
@@ -60,6 +59,46 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
+class MyDialog extends StatelessWidget {
+  MyDialog({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      child: Container(
+        height: 200,
+        padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
+        color: Colors.white,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('연락처 추가하기', style: TextStyle(
+              fontSize: 23,
+              fontWeight: FontWeight.bold
+            ),),
+            TextField(decoration: InputDecoration(
+              hintText: '이름을 입력해주세요.'
+            ),),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(onPressed: (){
+                  Navigator.pop(context);
+                }, child: Text('Cancel')),
+                TextButton(onPressed: (){
+                  Navigator.pop(context);
+                }, child: Text('OK')),
+              ],
+            )
+          ],
+        ),
+      )
+    );
+  }
+}
+
+
 // state를 가지고 있는 위젯을 만들고 싶다면 stful(statefulwidget)
 // state가 변경되면 해당 state를 가지고 있는 위젯이 재렌더링 됨
 // 자주 바뀌는 데이터 또는 바뀔 때마다 바로바로 보여져야 하는 데이터들은 state로 만들자
@@ -76,7 +115,6 @@ class _CounterState extends State<Counter> {
     return const Placeholder();
   }
 }
-
 
 // 커스텀 위젯을 사용하는 방법
 // 너무 많은 커스텀 위젯은 독이 될 수가 있다. 
