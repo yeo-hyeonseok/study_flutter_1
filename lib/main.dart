@@ -7,6 +7,7 @@ context가 무엇인고?
 
 부모 위젯의 state를 자식 위젯에서 사용하는 법
 => 보내고 등록하고 쓰기
+=> state는 부모에서 자식으로 밖에 전달 안됨, 리액트랑 똑같음
 */
 
 import 'package:flutter/material.dart';
@@ -31,6 +32,13 @@ class _MyAppState extends State<MyApp> {
   var names = ['문동은', '차무식', '강인구', '박연진', '오승훈', '전요환'];
   var count = 0;
 
+  // state 변경함수
+  void addOne() {
+    setState(() {
+      count += 1;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     // MaterialApp은 플러터에서 기본 제공하는 디자인 템플릿임
@@ -42,11 +50,7 @@ class _MyAppState extends State<MyApp> {
             showDialog(context: context, builder: (context){
               // 자식 위젯에게 state를 보내고 싶다면 name 파라미터로 보내기
               // (자식 위젯 생성자에 보내고자 하는 state를 파라미터로 넘겨주는 것 뿐임)
-              return MyDialog(count: count, setCount: (){
-                setState(() {
-                  count += 1;
-                });
-              });
+              return MyDialog(addOne: addOne);
             });
           },
           child: Text('+', style: TextStyle(
@@ -72,9 +76,11 @@ class _MyAppState extends State<MyApp> {
 class MyDialog extends StatelessWidget {
   // 부모로부터 전달받은 state 등록하기
   // 아래 생성자의 파라미터 부분의 중괄호는 optional을 의미
-  MyDialog({Key? key, this.count, this.setCount}) : super(key: key);
-  final count;
-  final setCount;
+  MyDialog({Key? key, this.addOne}) : super(key: key);
+  final addOne;
+  // 얘는 사용자로부터 입력받는 값을 기억할거예요~
+  var inputData = TextEditingController();
+  late var inputData2;
 
   @override
   Widget build(BuildContext context) {
@@ -91,9 +97,15 @@ class MyDialog extends StatelessWidget {
               fontSize: 23,
               fontWeight: FontWeight.bold
             ),),
-            // 전달받은 state 사용하기
-            TextField(decoration: InputDecoration(
-              hintText: '이름을 입력해주세요.'
+            // 사용자가 입력한 데이터를 관리하고 싶다면 controller
+            TextField(
+              controller: inputData,
+              // controller 쓰기 싫으면 이렇게 해도 됨 ㅋ
+              onChanged: (text){
+                inputData2 = text;
+              },
+              decoration: InputDecoration(
+                hintText: '이름을 입력해주세요.'
             ),),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -102,7 +114,8 @@ class MyDialog extends StatelessWidget {
                   Navigator.pop(context);
                 }, child: Text('Cancel')),
                 TextButton(onPressed: (){
-                  setCount();
+                  addOne();
+                  print(inputData.text);
                   Navigator.pop(context);
                 }, child: Text('OK')),
               ],
