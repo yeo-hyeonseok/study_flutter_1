@@ -4,6 +4,9 @@ context가 무엇인고?
 => showDialog(), Scaffold.of(), Navigator.pop(), Theme.of() 등은 context(MaterialApp) 사용을 강제하는 메서드들
    MaterialApp 위젯 안에서 해당 메서드들을 사용하면 오류 발생함.
    왜냐 context를 이용하는 메서드인데 MaterialApp의 부모가 존재하지 않기 때문
+
+부모 위젯의 state를 자식 위젯에서 사용하는 법
+=> 보내고 등록하고 쓰기
 */
 
 import 'package:flutter/material.dart';
@@ -26,6 +29,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   // stateful 위젯에서 변수 선언하면 그것이 바로 state임
   var names = ['문동은', '차무식', '강인구', '박연진', '오승훈', '전요환'];
+  var count = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +40,13 @@ class _MyAppState extends State<MyApp> {
             // 모달창을 만들고 싶다면 showDialog
             // 여기서의 context는 MaterialApp에 대한 정보 가지고 있음
             showDialog(context: context, builder: (context){
-              return MyDialog();
+              // 자식 위젯에게 state를 보내고 싶다면 name 파라미터로 보내기
+              // (자식 위젯 생성자에 보내고자 하는 state를 파라미터로 넘겨주는 것 뿐임)
+              return MyDialog(count: count, setCount: (){
+                setState(() {
+                  count += 1;
+                });
+              });
             });
           },
           child: Text('+', style: TextStyle(
@@ -44,7 +54,7 @@ class _MyAppState extends State<MyApp> {
           ),),
         ),
         appBar: AppBar(
-          title: Text('전화번호부'),
+          title: Text('count: $count'),
         ),
         // 스크롤바를 생성해주는 세로 정렬 박스를 만들고 싶다면 listview
         // 특정 항목을 반복해서 나타내고 싶다면 ListView.builder()
@@ -60,7 +70,11 @@ class _MyAppState extends State<MyApp> {
 }
 
 class MyDialog extends StatelessWidget {
-  MyDialog({Key? key}) : super(key: key);
+  // 부모로부터 전달받은 state 등록하기
+  // 아래 생성자의 파라미터 부분의 중괄호는 optional을 의미
+  MyDialog({Key? key, this.count, this.setCount}) : super(key: key);
+  final count;
+  final setCount;
 
   @override
   Widget build(BuildContext context) {
@@ -77,6 +91,7 @@ class MyDialog extends StatelessWidget {
               fontSize: 23,
               fontWeight: FontWeight.bold
             ),),
+            // 전달받은 state 사용하기
             TextField(decoration: InputDecoration(
               hintText: '이름을 입력해주세요.'
             ),),
@@ -87,6 +102,7 @@ class MyDialog extends StatelessWidget {
                   Navigator.pop(context);
                 }, child: Text('Cancel')),
                 TextButton(onPressed: (){
+                  setCount();
                   Navigator.pop(context);
                 }, child: Text('OK')),
               ],
