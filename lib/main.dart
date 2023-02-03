@@ -32,6 +32,7 @@ class _MyAppState extends State<MyApp> {
   var names = ['문동은', '차무식', '강인구', '박연진', '오승훈', '전요환'];
   var isEdit = false;
 
+
   void addOne(String name) {
     setState(() {
       names.add(name);
@@ -40,6 +41,7 @@ class _MyAppState extends State<MyApp> {
   void toggleIsEdit(){
     setState(() {
       isEdit = !isEdit;
+
     });
   }
 
