@@ -30,12 +30,10 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   // stateful 위젯에서 변수 선언하면 그것이 바로 state임
   var names = ['문동은', '차무식', '강인구', '박연진', '오승훈', '전요환'];
-  var count = 0;
 
-  // state 변경함수
-  void addOne() {
+  void addOne(String name) {
     setState(() {
-      count += 1;
+      names.add(name);
     });
   }
 
@@ -58,7 +56,7 @@ class _MyAppState extends State<MyApp> {
           ),),
         ),
         appBar: AppBar(
-          title: Text('count: $count'),
+          title: Text('메신저'),
         ),
         // 스크롤바를 생성해주는 세로 정렬 박스를 만들고 싶다면 listview
         // 특정 항목을 반복해서 나타내고 싶다면 ListView.builder()
@@ -77,10 +75,9 @@ class MyDialog extends StatelessWidget {
   // 부모로부터 전달받은 state 등록하기
   // 아래 생성자의 파라미터 부분의 중괄호는 optional을 의미
   MyDialog({Key? key, this.addOne}) : super(key: key);
-  final addOne;
   // 얘는 사용자로부터 입력받는 값을 기억할거예요~
-  var inputData = TextEditingController();
-  late var inputData2;
+  var textValue = TextEditingController();
+  final addOne;
 
   @override
   Widget build(BuildContext context) {
@@ -99,11 +96,7 @@ class MyDialog extends StatelessWidget {
             ),),
             // 사용자가 입력한 데이터를 관리하고 싶다면 controller
             TextField(
-              controller: inputData,
-              // controller 쓰기 싫으면 이렇게 해도 됨 ㅋ
-              onChanged: (text){
-                inputData2 = text;
-              },
+              controller: textValue,
               decoration: InputDecoration(
                 hintText: '이름을 입력해주세요.'
             ),),
@@ -114,8 +107,7 @@ class MyDialog extends StatelessWidget {
                   Navigator.pop(context);
                 }, child: Text('Cancel')),
                 TextButton(onPressed: (){
-                  addOne();
-                  print(inputData.text);
+                  addOne(textValue.text);
                   Navigator.pop(context);
                 }, child: Text('OK')),
               ],
