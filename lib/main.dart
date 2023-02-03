@@ -30,10 +30,16 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   // stateful 위젯에서 변수 선언하면 그것이 바로 state임
   var names = ['문동은', '차무식', '강인구', '박연진', '오승훈', '전요환'];
+  var isEdit = false;
 
   void addOne(String name) {
     setState(() {
       names.add(name);
+    });
+  }
+  void toggleIsEdit(){
+    setState(() {
+      isEdit = !isEdit;
     });
   }
 
@@ -60,12 +66,45 @@ class _MyAppState extends State<MyApp> {
         ),
         // 스크롤바를 생성해주는 세로 정렬 박스를 만들고 싶다면 listview
         // 특정 항목을 반복해서 나타내고 싶다면 ListView.builder()
-        body: ListView.builder(
-            itemCount: names.length,
-            itemBuilder: (context, index) => ListTile(
-              leading: Icon(Icons.person, color: Colors.black,),
-              title: Text(names[index]),
-            )),
+      body: Container(
+        padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+        child: Column(
+          children: [
+            Container(
+              padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
+              margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                    color: Colors.grey.shade400, width: 1.0
+                  )
+                )
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(onPressed: (){
+                    toggleIsEdit();
+                  }, child: Text('편집'))
+                ],
+              ),
+            ),
+            Expanded(
+              child: ListView.builder(
+                  itemCount: names.length,
+                  itemBuilder: (context, index) => ListTile(
+                    leading: Icon(Icons.person, color: Colors.black,),
+                    title: Text(names[index]),
+                    trailing: isEdit ? TextButton(onPressed: (){}, child: Text('삭제', style: TextStyle(
+                      color: Colors.white
+                    ),), style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.red),
+                    ),) : null
+                  )),
+            ),
+          ],
+        ),
+      ),
         bottomNavigationBar: BottomAppBar(child: MyFooter(),),
       );
   }
