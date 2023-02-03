@@ -71,20 +71,33 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-class MyDialog extends StatelessWidget {
+class MyDialog extends StatefulWidget {
   // 부모로부터 전달받은 state 등록하기
   // 아래 생성자의 파라미터 부분의 중괄호는 optional을 의미
   MyDialog({Key? key, this.addOne}) : super(key: key);
+  final addOne;
+
+  @override
+  State<MyDialog> createState() => _MyDialogState();
+}
+
+class _MyDialogState extends State<MyDialog> {
   // 얘는 사용자로부터 입력받는 값을 기억할거예요~
   var textValue = TextEditingController();
-  final addOne;
+  var isValue = false;
+
+  void toggleIsValue() {
+    setState(() {
+      isValue = true;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Dialog(
       child: Container(
         height: 200,
-        padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
+        padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
         color: Colors.white,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -100,6 +113,10 @@ class MyDialog extends StatelessWidget {
               decoration: InputDecoration(
                 hintText: '이름을 입력해주세요.'
             ),),
+            if(isValue) Text('이름을 입력하지 않으셨어요!', style: TextStyle(
+              color: Colors.red,
+              fontSize: 14
+            ),),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -107,8 +124,12 @@ class MyDialog extends StatelessWidget {
                   Navigator.pop(context);
                 }, child: Text('Cancel')),
                 TextButton(onPressed: (){
-                  addOne(textValue.text);
-                  Navigator.pop(context);
+                  if(textValue.text != '') {
+                    widget.addOne(textValue.text);
+                    Navigator.pop(context);
+                  } else {
+                    toggleIsValue();
+                  }
                 }, child: Text('OK')),
               ],
             )
