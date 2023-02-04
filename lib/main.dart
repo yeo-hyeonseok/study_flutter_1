@@ -12,6 +12,7 @@ context가 무엇인고?
 
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:contacts_service/contacts_service.dart';
 
 void main() {
   // 앱 구동 함수, 실제 구동할 메인페이지를 인수로 넣어주면 됨
@@ -38,10 +39,17 @@ class _MyAppState extends State<MyApp> {
 
     if(status.isGranted) {
       print('허용됨');
+      // 휴대폰에서 연락처 가져오는 방법
+      var contacts = await ContactsService.getContacts();
+
+      setState(() {
+        names = contacts;
+      });
     } else if(status.isDenied) {
       print('거부됨');
       // 연락처 접근 권한 요청 창 띄우기
-      Permission.contacts.request();
+      //Permission.contacts.request();
+      openAppSettings();
     }
   }
 
@@ -61,12 +69,12 @@ class _MyAppState extends State<MyApp> {
   }*/
 
   // stateful 위젯에서 변수 선언하면 그것이 바로 state임
-  var names = ['문동은', '차무식', '강인구', '박연진', '오승훈', '전요환'];
+  List<Contact> names = [];
   var isEdit = false;
 
   void addOne(String name) {
     setState(() {
-      names.add(name);
+      //names.add(name);
     });
   }
   
@@ -82,12 +90,19 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  void initIsEdit() {
+    setState(() {
+      isEdit = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     // MaterialApp은 플러터에서 기본 제공하는 디자인 템플릿임
     return Scaffold(
         floatingActionButton: FloatingActionButton(
           onPressed: (){
+            initIsEdit();
             // 모달창을 만들고 싶다면 showDialog
             // 여기서의 context는 MaterialApp에 대한 정보 가지고 있음
             showDialog(context: context, builder: (context){
@@ -104,6 +119,7 @@ class _MyAppState extends State<MyApp> {
           title: Text('메신저'),
           actions: [
             IconButton(onPressed: (){
+              initIsEdit();
               getPermission();
             }, icon: Icon(
               Icons.get_app,
@@ -146,7 +162,7 @@ class _MyAppState extends State<MyApp> {
                   itemCount: names.length,
                   itemBuilder: (context, index) => ListTile(
                     leading: Icon(Icons.person, color: Colors.black,),
-                    title: Text(names[index]),
+                    title: Text(names[index].displayName ?? '알 수 없는 사용자'),
                     trailing: isEdit ? TextButton(onPressed: (){
                       deleteOne(index);
                     }, child: Text('삭제', style: TextStyle(
@@ -164,6 +180,11 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
+// 커스텀 위젯을 사용하는 방법
+// 너무 많은 커스텀 위젯은 독이 될 수가 있다.
+// => 상태 관리의 어려움
+// => 재사용이 많이 되는 ui들을 커스텀 위젯으로 만들자 (컴포넌트화)
+// => 하나의 페이지도 good
 class MyDialog extends StatefulWidget {
   // 부모로부터 전달받은 state 등록하기
   // 아래 생성자의 파라미터 부분의 중괄호는 optional을 의미
@@ -233,53 +254,13 @@ class _MyDialogState extends State<MyDialog> {
   }
 }
 
-
-// state를 가지고 있는 위젯을 만들고 싶다면 stful(statefulwidget)
-// state가 변경되면 해당 state를 가지고 있는 위젯이 재렌더링 됨
-// 자주 바뀌는 데이터 또는 바뀔 때마다 바로바로 보여져야 하는 데이터들은 state로 만들자
-class Counter extends StatefulWidget {
-  const Counter({Key? key}) : super(key: key);
-
-  @override
-  State<Counter> createState() => _CounterState();
-}
-
-class _CounterState extends State<Counter> {
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
-  }
-}
-
-// 커스텀 위젯을 사용하는 방법
-// 너무 많은 커스텀 위젯은 독이 될 수가 있다. 
-// => 상태 관리의 어려움
-// => 재사용이 많이 되는 ui들을 커스텀 위젯으로 만들자 (컴포넌트화)
-// => 하나의 페이지도 good
-class Profile extends StatelessWidget {
-  const Profile({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.fromLTRB(12, 10, 12, 10),
-      child: Row(
-        children: [
-          Container(margin: EdgeInsets.fromLTRB(0, 0, 10, 0), child: Icon(Icons.person)),
-          Text('문동은')
-        ],
-      ),
-    );
-  }
-}
-
 class MyFooter extends StatelessWidget {
   const MyFooter({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.fromLTRB(0, 15, 0, 15),
+      padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -290,21 +271,5 @@ class MyFooter extends StatelessWidget {
       ),
     );
   }
-}
-
-
-
-// -------------------------------------------------------------------------------
-// 실은 변수나 함수로도 커스텀 위젯 같이 구현이 가능하긴 함
-// 불변하는 ui들은 변수나 함수로 축약해도 상관 없음 ex) 로고, 상단 바 등 
-// 유동적인 데이터를 가진 ui를 변수나 함수에 저장해둘 경우에는 성능 이슈가 발생할 수 있음
-var shopItem = SizedBox(
-  child: Text('커스텀 위젯을 사용해보자 ㅋ'),
-);
-
-Widget getShopItem() {
-  return SizedBox(
-    child: Text('커스텀 위젯을 사용해보자 ㅋ'),
-  );
 }
 
