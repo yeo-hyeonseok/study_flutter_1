@@ -166,7 +166,7 @@ class _MyDialogState extends State<MyDialog> {
     return Dialog(
       child: Container(
         height: 200,
-        padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+        padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
         color: Colors.white,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -179,6 +179,9 @@ class _MyDialogState extends State<MyDialog> {
             TextField(
               controller: textValue,
               decoration: InputDecoration(
+                icon: Icon(
+                  Icons.add_circle_outline,
+                ),
                 hintText: '이름을 입력해주세요.'
             ),),
             if(isValue) Text('이름을 입력하지 않으셨어요!', style: TextStyle(
@@ -190,7 +193,9 @@ class _MyDialogState extends State<MyDialog> {
               children: [
                 TextButton(onPressed: (){
                   Navigator.pop(context);
-                }, child: Text('Cancel')),
+                }, child: Text('Cancel', style: TextStyle(
+                  color: Colors.grey
+                ),)),
                 TextButton(onPressed: (){
                   if(textValue.text != '') {
                     widget.addOne(textValue.text);
