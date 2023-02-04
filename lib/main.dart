@@ -74,7 +74,11 @@ class _MyAppState extends State<MyApp> {
 
   void addOne(String name) {
     setState(() {
-      //names.add(name);
+      var newPerson = Contact();
+      newPerson.givenName = name;
+      ContactsService.addContact(newPerson);
+      names.add(newPerson);
+      print(newPerson.givenName);
     });
   }
   
@@ -162,7 +166,7 @@ class _MyAppState extends State<MyApp> {
                   itemCount: names.length,
                   itemBuilder: (context, index) => ListTile(
                     leading: Icon(Icons.person, color: Colors.black,),
-                    title: Text(names[index].displayName ?? '알 수 없는 사용자'),
+                    title: Text(names[index].givenName ?? '알 수 없는 사용자'),
                     trailing: isEdit ? TextButton(onPressed: (){
                       deleteOne(index);
                     }, child: Text('삭제', style: TextStyle(
