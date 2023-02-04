@@ -38,11 +38,13 @@ class _MyAppState extends State<MyApp> {
       names.add(name);
     });
   }
+  
   void deleteOne(int index) {
     setState(() {
       names.removeAt(index);
     });
   }
+  
   void toggleIsEdit(){
     setState(() {
       isEdit = !isEdit;
