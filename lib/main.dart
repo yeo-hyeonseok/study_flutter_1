@@ -11,6 +11,7 @@ context가 무엇인고?
 */
 
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 void main() {
   // 앱 구동 함수, 실제 구동할 메인페이지를 인수로 넣어주면 됨
@@ -28,10 +29,40 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  // dart 언어 특징 상 오래걸리는 작업은 제껴두고 다음 줄을 실행하려고 함
+  // await 붙이면 해당 작업 끝날 때까지 다음 줄 실행 안하고 기다려줌
+  // await은 Future를 반환하는 함수에다 사용할 수 있음, 자바스크립트로 따자면 Promise랑 비슷한 개념인듯
+  void getPermission() async {
+    // 유저의 연락처 접근 권한 상태를 가져오기
+    var status = await Permission.contacts.status;
+
+    if(status.isGranted) {
+      print('허용됨');
+    } else if(status.isDenied) {
+      print('거부됨');
+      // 연락처 접근 권한 요청 창 띄우기
+      Permission.contacts.request();
+    }
+  }
+
+  /*
+  // initState 안에 작성하는 코드는 위젯이 로드될 때 한번 실행됨
+  // useEffect에서 dependency로 []로 주는 것과 같음
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    // 요새는 정책상 두번 이상 거절하면 해당 팝업창이 절대 안뜸
+    // getPermission();
+
+    // 그니까 팝업창 바로 띄우지 말고 앱 설정 화면 띄워서 사용자가 알아서 세팅할 수 있게끔 하셈
+    openAppSettings();
+  }*/
+
   // stateful 위젯에서 변수 선언하면 그것이 바로 state임
   var names = ['문동은', '차무식', '강인구', '박연진', '오승훈', '전요환'];
   var isEdit = false;
-
 
   void addOne(String name) {
     setState(() {
@@ -48,7 +79,6 @@ class _MyAppState extends State<MyApp> {
   void toggleIsEdit(){
     setState(() {
       isEdit = !isEdit;
-
     });
   }
 
@@ -72,6 +102,13 @@ class _MyAppState extends State<MyApp> {
         ),
         appBar: AppBar(
           title: Text('메신저'),
+          actions: [
+            IconButton(onPressed: (){
+              getPermission();
+            }, icon: Icon(
+              Icons.get_app,
+            ),)
+          ],
         ),
         // 스크롤바를 생성해주는 세로 정렬 박스를 만들고 싶다면 listview
         // 특정 항목을 반복해서 나타내고 싶다면 ListView.builder()
@@ -160,7 +197,7 @@ class _MyDialogState extends State<MyDialog> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('연락처 추가하기', style: TextStyle(
-              fontSize: 23,
+              fontSize: 20,
               fontWeight: FontWeight.bold
             ),),
             // 사용자가 입력한 데이터를 관리하고 싶다면 controller
