@@ -38,6 +38,13 @@ class _MyAppState extends State<MyApp> {
       names.add(name);
     });
   }
+  
+  void deleteOne(int index) {
+    setState(() {
+      names.removeAt(index);
+    });
+  }
+  
   void toggleIsEdit(){
     setState(() {
       isEdit = !isEdit;
@@ -97,7 +104,9 @@ class _MyAppState extends State<MyApp> {
                   itemBuilder: (context, index) => ListTile(
                     leading: Icon(Icons.person, color: Colors.black,),
                     title: Text(names[index]),
-                    trailing: isEdit ? TextButton(onPressed: (){}, child: Text('삭제', style: TextStyle(
+                    trailing: isEdit ? TextButton(onPressed: (){
+                      deleteOne(index);
+                    }, child: Text('삭제', style: TextStyle(
                       color: Colors.white
                     ),), style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(Colors.red),
