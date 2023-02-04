@@ -89,13 +89,19 @@ class _MyAppState extends State<MyApp> {
                   )
                 )
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  TextButton(onPressed: (){
-                    toggleIsEdit();
-                  }, child: Text('편집'))
-                ],
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('친구 수 (${names.length})', style: TextStyle(
+                      fontWeight: FontWeight.w500
+                    ),),
+                    TextButton(onPressed: (){
+                      toggleIsEdit();
+                    }, child: Text('편집'))
+                  ],
+                ),
               ),
             ),
             Expanded(
